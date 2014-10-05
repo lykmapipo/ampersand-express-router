@@ -16,66 +16,65 @@ npm install ampersand-express-router
 ## example
 
 ```javascript
-  var Router = require('ampersand-express-router');
-  var express = require('express');
-  var bodyParser = require('body-parser');
-  var app = express();
+var Router = require('ampersand-express-router');
+var express = require('express');
+var bodyParser = require('body-parser');
+var app = express();
 
-  // parse application/x-www-form-urlencoded
-  app.use(bodyParser.urlencoded({
-      extended: false
-  }));
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 
-  // parse application/json
-  app.use(bodyParser.json());
+// parse application/json
+app.use(bodyParser.json());
 
-  var UserRouter = Router.extend({
+var UserRouter = Router.extend({
 
-      // ------- ROUTES DEFINITIONS ---------
-      routes: {
-          'users|post': 'create',
-          'users|delete': 'destroy',
-          'users|put': 'edit',
-          'users|get': 'all',
-          'users/:id|get': 'show'
-      },
+    // ------- ROUTES DEFINITIONS ---------
+    routes: {
+        'users|post': 'create',
+        'users|delete': 'destroy',
+        'users|put': 'edit',
+        'users|get': 'all',
+        'users/:id|get': 'show'
+    },
 
-      // ------- ROUTE HANDLERS ---------
-      create: function(request, response) {
-          response.json({
-              name: 'create'
-          });
-      },
-      destroy: function(request, response) {
-          response.json({
-              name: 'destroy'
-          });
-      },
-      edit: function(request, response) {
-          response.json({
-              name: 'edit'
-          });
-      },
-      all: function(request, response) {
-          response.json({
-              name: 'all'
-          });
-      },
-      show: function(request, response) {
-          response.json({
-              name: request.param('id')
-          });
-      }
+    // ------- ROUTE HANDLERS ---------
+    create: function(request, response) {
+        response.json({
+            name: 'create'
+        });
+    },
+    destroy: function(request, response) {
+        response.json({
+            name: 'destroy'
+        });
+    },
+    edit: function(request, response) {
+        response.json({
+            name: 'edit'
+        });
+    },
+    all: function(request, response) {
+        response.json({
+            name: 'all'
+        });
+    },
+    show: function(request, response) {
+        response.json({
+            name: request.param('id')
+        });
+    }
 
-      ...
-  });
+    ...
+});
 
-  var UsersRoute = new UserRouter({
-      app: app
-  });
+var UsersRoute = new UserRouter({
+    app: app
+});
 
-  app.listen(3000);
-
+app.listen(3000);
 ```
 <!-- endhide -->
 
