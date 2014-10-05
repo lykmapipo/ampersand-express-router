@@ -1,39 +1,42 @@
 {
-  "name": "ampersand-express-router",
-  "description": "Serverside backbone router inspired by backbone router and ampersand-router.",
-  "version": "0.0.1",
-  "author": {
-    "name": "Lally Elias",
-    "email": "lallyelias87@gmail.com"
-  },
-  "bugs": {
-    "url": "https://github.com/lykmapipo/ampersand-express-router/issues"
-  },
-  "dependencies": {
-    "ampersand-class-extend": "^1.0.0",
-    "underscore": "1.6.0"
-  },
-  "devDependencies": {
-    "jshint": "^2.5.3",
-    "supertest": "^0.14.0",
-    "express": "^4.9.5",
-    "chai": "^1.9.2",
-    "body-parser": "^1.9.0"
-  },
-  "homepage": "https://github.com/lykmapipo/ampersand-express-router",
-  "keywords": [
-    "serverside",
-    "router",
-    "history",
-    "backbone"
-  ],
-  "license": "MIT",
-  "main": "router.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/lykmapipo/ampersand-express-router"
-  },
-  "scripts": {
-    "test": "mocha"
-  }
+    "name": "ampersand-express-router",
+    "description": "Serverside backbone router inspired by backbone router and ampersand-router.",
+    "version": "0.0.1",
+    "author": {
+        "name": "Lally Elias",
+        "email": "lallyelias87@gmail.com"
+    },
+    "bugs": {
+        "url": "https://github.com/lykmapipo/ampersand-express-router/issues"
+    },
+    "dependencies": {
+        "ampersand-class-extend": "^1.0.0",
+        "underscore": "1.6.0"
+    },
+    "devDependencies": {
+        "jshint": "^2.5.3",
+        "supertest": "^0.14.0",
+        "express": "^4.9.5",
+        "chai": "^1.9.2",
+        "body-parser": "^1.9.0"
+    },
+    "homepage": "https://github.com/lykmapipo/ampersand-express-router",
+    "keywords": [
+        "serverside",
+        "router",
+        "history",
+        "backbone"
+    ],
+    "license": "MIT",
+    "main": "router.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/lykmapipo/ampersand-express-router"
+    },
+    "scripts": {
+        "test": "mocha"
+    },
+    "engines": {
+        "node": ">=0.10.0"
+    }
 }
