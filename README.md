@@ -2,9 +2,7 @@
 
 Serverside backbone router for express 4. Mostly lifted from [Backbone.js](http://backbonejs.org/#Router).
 
-<!-- starthide -->
 Part of the [Ampersand.js toolkit](http://ampersandjs.com) for building severside applications.
-<!-- endhide -->
 
 ## install
 
@@ -12,7 +10,6 @@ Part of the [Ampersand.js toolkit](http://ampersandjs.com) for building seversid
 npm install ampersand-express-router
 ```
 
-<!-- starthide -->
 ## example
 
 ```javascript
@@ -76,20 +73,19 @@ var UsersRoute = new UserRouter({
 
 app.listen(3000);
 ```
-<!-- endhide -->
 
 ## API Reference
 
 ### extend `Router.extend(properties)`
 
-Get started by creating a custom router class. Define actions that are triggered when certain URL are matched, and provide a [routes](#ampersand-express-router-routes) hash that pairs routes to actions. Note that you'll want to avoid using a leading slash in your route definitions:
+Get started by creating a custom router class. Define actions that are triggered when certain URL are matched, and provide a routes hash that pairs routes to actions. Note that you'll want to avoid using a leading slash in your route definitions:
 
 ```javascript
 var UserRouter = Router.extend({
 
   routes: {
     "users|get":                 "all",    // /users
-    "users/:id":        "show",  // /users/11
+    "users/:id|get":        "show",  // /users/11
   },
 
   all: function(request,response,next) {
@@ -112,7 +108,6 @@ The routes hash maps URLs with parameters to functions on your router. Routes ca
 
 When creating a new router, you must pass an instance of express application which this router will be mounted into and additional express router options.
 
-<!-- starthide -->
 ## credits
 
 All credit goes to Jeremy Ashkenas and the rest of the Backbone.js authors.
@@ -120,4 +115,3 @@ All credit goes to Jeremy Ashkenas and the rest of the Backbone.js authors.
 ## license
 
 MIT
-<!-- endhide -->
