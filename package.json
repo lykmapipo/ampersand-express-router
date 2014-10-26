@@ -1,7 +1,7 @@
 {
     "name": "ampersand-express-router",
     "description": "Serverside backbone router inspired by backbone router and ampersand-router.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": {
         "name": "Lally Elias",
         "email": "lallyelias87@gmail.com"
