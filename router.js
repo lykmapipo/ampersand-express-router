@@ -125,17 +125,19 @@ _.extend(Router.prototype, {
     _bind_before_filters: function() {
         this.before_filters = _.result(this, 'before_filters');
 
-        var self = this;
+        if (this.before_filters) {
+            var self = this;
 
-        Object.keys(this.before_filters).forEach(function beforeFilter(beforeFilter) {
-            // this will only be invoked if the path starts with /bar from the mount point
-            var method = route.split('|')[1] || 'get';
-            var url = route.split('|')[0];
+            Object.keys(this.before_filters).forEach(function beforeFilter(beforeFilter) {
+                // this will only be invoked if the path starts with /bar from the mount point
+                var method = route.split('|')[1] || 'get';
+                var url = route.split('|')[0];
 
-            self._express_router[method]('/' + url, function(req, res, next) {
-                self._get_filter(beforeFilter)(request, response, next);
+                self._express_router[method]('/' + url, function(req, res, next) {
+                    self._get_filter(beforeFilter)(request, response, next);
+                });
             });
-        });
+        }
     }
 
 });
