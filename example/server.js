@@ -29,56 +29,54 @@ var UserRouter = Router.extend({
 
     // ------- ROUTE HANDLERS ---------
     create: function(request, response) {
-        response.json({
-            name: 'create'
-        });
+        response.json(request.out);
     },
     destroy: function(request, response) {
-        response.json({
-            name: 'destroy'
-        });
+        response.json(request.out);
     },
     edit: function(request, response) {
-        response.json({
-            name: 'edit'
-        });
+        response.json(request.out);
     },
     all: function(request, response) {
-        console.log("all");
         response.json(request.out);
     },
     show: function(request, response) {
-        response.json({
-            name: request.param('id')
-        });
+        response.json(request.out);
     },
 
     // ------- BEFORE FILTER HANDLERS ---------
     beforeCreate: function(request, response, next) {
-        console.log("beforeCreate");
+        request.out = {
+            name: 'before create'
+        }
         next();
     },
 
     beforeDestroy: function(request, response, next) {
-        console.log("beforeDestroy");
+        request.out = {
+            name: 'before destroy'
+        }
         next();
     },
 
     beforeEdit: function(request, response, next) {
-        console.log("beforeEdit");
+        request.out = {
+            name: 'before edit'
+        }
         next();
     },
 
     beforeAll: function(request, response, next) {
-        console.log("beforeAll");
         request.out = {
-            name: 'all'
+            name: 'before all'
         }
         next();
     },
 
     beforeShow: function(request, response, next) {
-        console.log("beforeShow");
+        request.out = {
+            name: 'before show'
+        }
         next();
     }
 

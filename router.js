@@ -43,10 +43,8 @@ var Router = module.exports = function(options) {
 
     //mount to express app
     if (this._express_filter_router) {
-        console.log("with filters");
         this.app.use(this._express_filter_router, this._express_router);
     } else {
-        console.log("with no filters");
         this.app.use(this._express_router);
     }
 
@@ -158,6 +156,8 @@ _.extend(Router.prototype, {
     }
 
 });
+
+
 /**
  * @function
  *
