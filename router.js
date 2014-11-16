@@ -4,10 +4,12 @@ var express = require('express');
 
 /**
  * @module Router
- * @version 0.0.1
+ * @version 0.0.3
+ * 
  * @requires module:express
  * @requires module:underscore
  * @requires module:ampersand-class-extend
+ * 
  * @param  {Object} options options to be passed into the router
  *
  * Options is an optional object to alter the behavior of the router.
@@ -32,21 +34,22 @@ var Router = module.exports = function(options) {
         this.app = options.app;
     }
 
-    //internal express router for this router 
-    this._express_router = express.Router({
-        caseSensitive: options.caseSensitive || false,
-        strict: options.strict || false,
-        mergeParams: options.mergeParams || false
-    });
-
     //call initialize logic
     this.initialize.apply(this, arguments);
 
+    //bind before filters
+    this._bind_before_filters(options);
+
     //bind routes to this router
-    this._bind_routes();
+    this._bind_routes(options);
 
     //mount to express app
-    this.app.use(this._express_router);
+    if (this._express_filter_router) {
+        this.app.use(this._express_filter_router, this._express_router);
+    } else {
+        this.app.use(this._express_router);
+    }
+
 };
 
 // Set up all inheritable **Backbone.Router** properties and methods.
@@ -72,12 +75,25 @@ _.extend(Router.prototype, {
         return this[handle];
     },
 
+
+    /**
+     * @function
+     *
+     * compute a request filter function for the specified route
+     * @param  {String} filter a filter to lookup its request filter
+     * @return {Function}       a request filter
+     */
+    _get_filter: function(filter) {
+        var filter = this.before_filters[filter];
+        return this[filter];
+    },
+
     /**
      * @function
      *
      * Bind all defined routes to express router.
      */
-    _bind_routes: function() {
+    _bind_routes: function(options) {
         if (!this.routes) {
             throw Error("No routes specified for this router ");
         }
@@ -85,6 +101,14 @@ _.extend(Router.prototype, {
         if (!this.app) {
             throw Error("No express application specified to bind this router");
         }
+
+        //internal express router for this router 
+        this._express_router = express.Router({
+            caseSensitive: options.caseSensitive || false,
+            strict: options.strict || false,
+            mergeParams: options.mergeParams || false
+        });
+
 
         this.routes = _.result(this, 'routes');
 
@@ -99,8 +123,43 @@ _.extend(Router.prototype, {
                 self._get_handler(route)(request, response, next);
             });
         });
+    },
+
+    /**
+     * @function
+     *
+     * bind request before filters
+     */
+    _bind_before_filters: function(options) {
+
+        this.before_filters = _.result(this, 'before_filters');
+
+        if (this.before_filters) {
+            //internal express router that will be used to organize before filters
+            //and used in middleware chain
+            this._express_filter_router = express.Router({
+                caseSensitive: options.caseSensitive || false,
+                strict: options.strict || false,
+                mergeParams: options.mergeParams || false
+            });
+
+            var self = this;
+
+            Object.keys(this.before_filters).forEach(function beforeFilter(beforeFilter) {
+
+                var method = beforeFilter.split('|')[1] || 'get';
+                var url = beforeFilter.split('|')[0];
+
+                self._express_filter_router[method]('/' + url, function(request, response, next) {
+                    self._get_filter(beforeFilter)(request, response, next);
+                });
+            });
+        }
     }
+
 });
+
+
 /**
  * @function
  *

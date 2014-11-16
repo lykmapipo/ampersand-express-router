@@ -15,46 +15,7 @@ describe('Router', function() {
         done();
     });
 
-    it('can extended and get its own routes', function(done) {
-
-        var HomeRouter = Router.extend({
-            routes: {
-                'home|post': 'post'
-            }
-        });
-
-        var HomeRoute = new HomeRouter({
-            app: app
-        });
-
-        expect(Object.keys(HomeRoute.routes)).to.contain('home|post');
-
-        done();
-    });
-
-
-    it('can compute request handler for its own routes', function(done) {
-
-        var HomeRouter = Router.extend({
-            routes: {
-                'home|post': 'post',
-            },
-            post: function(request, response) {
-                console.log(request + ' : ' + respose);
-            }
-        });
-
-        var HomeRoute = new HomeRouter({
-            app: app
-        });
-
-        expect(Object.keys(HomeRoute.routes)).to.contain('home|post');
-        expect(HomeRoute._get_handler('home|post')).to.be.a('function');
-
-        done();
-    });
-
-    it('can extended and instantiated', function(done) {
+    it('can be extended and instantiated', function(done) {
 
         var HomeRouter = Router.extend({
             routes: {
@@ -95,4 +56,101 @@ describe('Router', function() {
 
         done();
     });
+
+
+
+    describe('router routes', function() {
+        it('can be extended and get its own routes', function(done) {
+
+            var HomeRouter = Router.extend({
+                routes: {
+                    'home|post': 'post'
+                }
+            });
+
+            var HomeRoute = new HomeRouter({
+                app: app
+            });
+
+            expect(Object.keys(HomeRoute.routes)).to.contain('home|post');
+
+            done();
+        });
+
+
+        it('can compute request handler for its own routes', function(done) {
+
+            var HomeRouter = Router.extend({
+                routes: {
+                    'home|post': 'post',
+                },
+                post: function(request, response) {
+                    console.log(request + ' : ' + respose);
+                }
+            });
+
+            var HomeRoute = new HomeRouter({
+                app: app
+            });
+
+            expect(Object.keys(HomeRoute.routes)).to.contain('home|post');
+            expect(HomeRoute._get_handler('home|post')).to.be.a('function');
+
+            done();
+        });
+
+    });
+
+
+    describe('router before filters', function() {
+        it('can be extended and get its own before filter', function(done) {
+
+            var HomeRouter = Router.extend({
+                routes: {
+                    'home|post': 'post'
+                },
+                before_filters: {
+                    'home|post': 'beforePost'
+                }
+            });
+
+            var HomeRoute = new HomeRouter({
+                app: app
+            });
+
+            expect(Object.keys(HomeRoute.before_filters)).to.contain('home|post');
+
+            done();
+        });
+
+
+        it('can compute before filter handler for its own before filters', function(done) {
+
+            var HomeRouter = Router.extend({
+                routes: {
+                    'home|post': 'post',
+                },
+                before_filters: {
+                    'home|post': 'beforePost'
+                },
+                post: function(request, response) {
+                    console.log(request + ' : ' + respose);
+                },
+                beforePost: function(request, response, next) {
+                    next();
+                }
+            });
+
+            var HomeRoute = new HomeRouter({
+                app: app
+            });
+
+            expect(Object.keys(HomeRoute.before_filters)).to.contain('home|post');
+            expect(HomeRoute._get_filter('home|post')).to.be.a('function');
+
+            done();
+        });
+    });
+
+
 });

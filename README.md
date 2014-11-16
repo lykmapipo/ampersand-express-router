@@ -37,6 +37,15 @@ var UserRouter = Router.extend({
         'users/:id|get': 'show'
     },
 
+    // ------- BEFORE FILTERS DEFINITIONS ---------
+    before_filters: {
+        'users|post': 'beforeCreate',
+        'users|delete': 'beforeDestroy',
+        'users|put': 'beforeEdit',
+        'users|get': 'beforeAll',
+        'users/:id|get': 'beforeShow'
+    },
+
     // ------- ROUTE HANDLERS ---------
     create: function(request, response) {
         response.json({
@@ -62,7 +71,45 @@ var UserRouter = Router.extend({
         response.json({
             name: request.param('id')
         });
+    },
+
+
+    // ------- BEFORE FILTER HANDLERS ---------
+    beforeCreate: function(request, response, next) {
+        request.out = {
+            name: 'before create'
+        }
+        next();
+    },
+
+    beforeDestroy: function(request, response, next) {
+        request.out = {
+            name: 'before destroy'
+        }
+        next();
+    },
+
+    beforeEdit: function(request, response, next) {
+        request.out = {
+            name: 'before edit'
+        }
+        next();
+    },
+
+    beforeAll: function(request, response, next) {
+        request.out = {
+            name: 'before all'
+        }
+        next();
+    },
+
+    beforeShow: function(request, response, next) {
+        request.out = {
+            name: 'before show'
+        }
+        next();
     }
+
 
     ...
 });
@@ -88,12 +135,27 @@ var UserRouter = Router.extend({
     "users/:id|get":        "show",  // /users/11
   },
 
+  before_filters: {
+    "users|get":                 "all",    // this filter will run before /users
+    "users/:id|get":        "show",  // this filter will run before /users/11
+  },
+
   all: function(request,response,next) {
     //...
   },
 
   show: function(request,response,next) {
     //...
+  },
+
+  beforeAll: function(request,response,next) {
+    //...
+    next(); //dont forget to call next()
+  },
+
+  beforeShow: function(request,response,next) {
+    //...
+    next(); //dont forget to call next()
   }
 
 });
@@ -104,14 +166,19 @@ var UserRouter = Router.extend({
 The routes hash maps URLs with parameters to functions on your router. Routes can contain path parameter parts, `:param`.
 
 
+### routers `router.before_filters`
+
+The before filters hash maps URLs with parameters to functions on your router. Route filters can contain path parameter parts, `:param`.
+
+
 ### constructor / initialize `new Router([options])`
 
 When creating a new router, you must pass an instance of express application which this router will be mounted into and additional express router options.
 
-## credits
+## Credits
 
 All credit goes to Jeremy Ashkenas and the rest of the Backbone.js authors.
 
-## license
+## License
 
 MIT
