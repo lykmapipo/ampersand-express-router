@@ -4,10 +4,12 @@ var express = require('express');
 
 /**
  * @module Router
- * @version 0.0.1
+ * @version 0.0.3
+ * 
  * @requires module:express
  * @requires module:underscore
  * @requires module:ampersand-class-extend
+ * 
  * @param  {Object} options options to be passed into the router
  *
  * Options is an optional object to alter the behavior of the router.
