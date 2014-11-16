@@ -42,6 +42,9 @@ var Router = module.exports = function(options) {
     //call initialize logic
     this.initialize.apply(this, arguments);
 
+    //bind before filters
+    this._bind_before_filters();
+
     //bind routes to this router
     this._bind_routes();
 
@@ -72,6 +75,19 @@ _.extend(Router.prototype, {
         return this[handle];
     },
 
+
+    /**
+     * @function
+     *
+     * compute a request filter function for the specified route
+     * @param  {String} filter a filter to lookup its request filter
+     * @return {Function}       a request filter
+     */
+    _get_filter: function(filter) {
+        var filter = this.before_filters[filter];
+        return this[filter];
+    },
+
     /**
      * @function
      *
@@ -99,7 +115,29 @@ _.extend(Router.prototype, {
                 self._get_handler(route)(request, response, next);
             });
         });
+    },
+
+    /**
+     * @function
+     *
+     * bind request before filters
+     */
+    _bind_before_filters: function() {
+        this.before_filters = _.result(this, 'before_filters');
+
+        var self = this;
+
+        Object.keys(this.before_filters).forEach(function beforeFilter(beforeFilter) {
+            // this will only be invoked if the path starts with /bar from the mount point
+            var method = route.split('|')[1] || 'get';
+            var url = route.split('|')[0];
+
+            self._express_router[method]('/' + url, function(req, res, next) {
+                self._get_filter(beforeFilter)(request, response, next);
+            });
+        });
     }
+
 });
 /**
  * @function
