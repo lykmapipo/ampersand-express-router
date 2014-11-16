@@ -22,7 +22,7 @@ var UserRouter = Router.extend({
     before_filters: {
         'users|post': 'beforeCreate',
         'users|delete': 'beforeDestroy',
-        'users|put': ['beforeEdit']
+        'users|put': 'beforeEdit',
         'users|get': 'beforeAll',
         'users/:id|get': 'beforeShow'
     },
@@ -44,9 +44,8 @@ var UserRouter = Router.extend({
         });
     },
     all: function(request, response) {
-        response.json({
-            name: 'all'
-        });
+        console.log("all");
+        response.json(request.out);
     },
     show: function(request, response) {
         response.json({
@@ -56,22 +55,30 @@ var UserRouter = Router.extend({
 
     // ------- BEFORE FILTER HANDLERS ---------
     beforeCreate: function(request, response, next) {
+        console.log("beforeCreate");
         next();
     },
 
     beforeDestroy: function(request, response, next) {
+        console.log("beforeDestroy");
         next();
     },
 
     beforeEdit: function(request, response, next) {
+        console.log("beforeEdit");
         next();
     },
 
     beforeAll: function(request, response, next) {
+        console.log("beforeAll");
+        request.out = {
+            name: 'all'
+        }
         next();
     },
 
     beforeShow: function(request, response, next) {
+        console.log("beforeShow");
         next();
     }
 
@@ -80,3 +87,4 @@ var UsersRoute = new UserRouter({
     app: app
 });
 app.listen(3000);
+console.log("app start");
